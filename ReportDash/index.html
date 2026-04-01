@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReportDash — Relatório (Excel)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header" id="mainHeader">
+    <h1>ReportDash</h1>
+    <p class="subtitle">Arraste o Excel aqui ou clique para escolher o arquivo.</p>
+  </header>
+
+  <main class="main" id="mainHome">
+    <section class="dropzone" id="dropzone" aria-label="Área para soltar arquivo Excel">
+      <input type="file" id="fileInput" accept=".xlsx,.xls" hidden />
+      <p class="dropzone__text">Solte o arquivo <strong>.xlsx</strong> ou clique para selecionar</p>
+      <p class="dropzone__file" id="fileName" hidden></p>
+    </section>
+
+    <div class="actions" id="actions" hidden>
+      <button type="button" class="btn btn--primary" id="btnReport">Abrir relatório</button>
+    </div>
+  </main>
+
+  <!-- Relatório: somente tabela, ocupa a janela inteira -->
+  <div class="report-fullscreen" id="reportFullscreen" hidden>
+    <div class="report-fullscreen__bar">
+      <div class="report-fullscreen__meta">
+        <span class="report-fullscreen__title">Relatório</span>
+        <span class="report-fullscreen__hint" id="reportMeta"></span>
+      </div>
+      <div class="report-fullscreen__bar-actions">
+        <span class="report-bar__busy" id="reportBarBusy" hidden>
+          <span class="spinner spinner--sm" aria-hidden="true"></span>
+          <span class="report-bar__busy-text">Montando tabela…</span>
+        </span>
+        <button type="button" class="btn btn--ghost" id="btnCloseReport">Fechar</button>
+      </div>
+    </div>
+    <div class="report-fullscreen__scroll" id="reportScroll" role="region" aria-label="Dados do relatório">
+      <p class="report-loading" id="reportLoading" hidden>Carregando tabela…</p>
+      <table class="data-table data-table--report" id="reportTable"></table>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
