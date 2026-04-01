@@ -7,38 +7,121 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header" id="mainHeader">
-    <h1>ReportDash</h1>
-    <p class="subtitle">Arraste o Excel aqui ou clique para escolher o arquivo.</p>
-  </header>
-
-  <main class="main" id="mainHome">
-    <section class="dropzone" id="dropzone" aria-label="Área para soltar arquivo Excel">
-      <input type="file" id="fileInput" accept=".xlsx,.xls" hidden />
-      <p class="dropzone__text">Solte o arquivo <strong>.xlsx</strong> ou clique para selecionar</p>
-      <p class="dropzone__file" id="fileName" hidden></p>
-    </section>
-
-    <div class="actions" id="actions" hidden>
-      <button type="button" class="btn btn--primary" id="btnReport">Abrir relatório</button>
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Relatórios a partir de Excel</p>
+      <h1 id="hero-title" class="hero__title">ReportDash</h1>
+      <p class="hero__lead">
+        Leia sua planilha no navegador e abra o relatório em tela cheia. Use arquivos
+        <strong>.xlsx</strong> ou <strong>.xls</strong>.
+      </p>
+      <a class="hero__cta btn btn--primary" href="#export">Carregar planilha</a>
     </div>
-  </main>
+    <a class="hero__scroll-hint" href="#export" aria-label="Rolar até a área de exportação">
+      <span class="hero__scroll-text">Role para baixo</span>
+      <span class="hero__scroll-icon" aria-hidden="true">↓</span>
+    </a>
+  </section>
+
+  <div class="page-export" id="export">
+    <div class="export-workspace" id="exportWorkspace">
+      <div class="export-card">
+        <h2 class="export-card__title">O que fazer aqui</h2>
+        <p class="export-card__lead">
+          Envie uma planilha para gerar o relatório em tela cheia no navegador.
+        </p>
+        <ol class="export-card__steps">
+          <li>
+            <strong>Arraste</strong> o arquivo para a área tracejada ou <strong>clique</strong> nela para
+            escolher no computador.
+          </li>
+          <li>
+            Use <strong>.xlsx</strong> ou <strong>.xls</strong>. A leitura usa a <strong>primeira aba</strong>
+            da planilha, com a <strong>primeira linha</strong> como cabeçalho das colunas.
+          </li>
+          <li>
+            Depois de carregar, ajuste <strong>colunas</strong>, <strong>limite de linhas</strong> e
+            <strong>filtros</strong> (estilo seleção de dados) antes de visualizar.
+          </li>
+        </ol>
+      </div>
+
+      <main class="main" id="mainHome">
+        <section class="dropzone" id="dropzone" aria-label="Área para soltar arquivo Excel">
+          <input type="file" id="fileInput" accept=".xlsx,.xls" hidden />
+          <p class="dropzone__text">Solte o arquivo <strong>.xlsx</strong> ou clique para selecionar</p>
+          <p class="dropzone__file" id="fileName" hidden></p>
+        </section>
+
+        <div class="import-config" id="importConfig" hidden>
+          <div class="import-config__stats" id="importStats"></div>
+
+          <section class="import-config__block">
+            <h3 class="import-config__h">Colunas no relatório</h3>
+            <p class="import-config__hint">Desmarque o que não precisa (menos colunas = mais rápido).</p>
+            <div class="import-config__col-toggles">
+              <button type="button" class="import-config__mini" id="btnColsAll">Marcar todas</button>
+              <button type="button" class="import-config__mini" id="btnColsNone">Desmarcar todas</button>
+            </div>
+            <div class="import-config__cols" id="importCols"></div>
+          </section>
+
+          <section class="import-config__block">
+            <h3 class="import-config__h">Limite de linhas</h3>
+            <p class="import-config__hint">Evita travar o navegador em planilhas muito grandes.</p>
+            <select class="import-config__select" id="importRowLimit" aria-label="Limite de linhas">
+              <option value="500">500</option>
+              <option value="1000">1.000</option>
+              <option value="2500">2.500</option>
+              <option value="5000" selected>5.000</option>
+              <option value="10000">10.000</option>
+              <option value="25000">25.000</option>
+              <option value="50000">50.000</option>
+              <option value="all">Todas (cuidado)</option>
+            </select>
+          </section>
+
+          <section class="import-config__block">
+            <h3 class="import-config__h">Filtros antes de carregar</h3>
+            <p class="import-config__hint">
+              Opcional: só linhas em que a coluna <strong>contém</strong> o texto. Escolha a coluna e use
+              <strong>Ver valores</strong> para listar opções da planilha, ou digite no campo (vários filtros =
+              todos precisam bater).
+            </p>
+            <div class="import-config__prefilters" id="importPrefilters"></div>
+            <button type="button" class="import-config__mini" id="btnAddPrefilter">+ Adicionar filtro</button>
+          </section>
+
+          <div class="import-config__footer">
+            <button type="button" class="btn btn--primary" id="btnReport">Visualizar relatório</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
 
   <!-- Relatório: somente tabela, ocupa a janela inteira -->
   <div class="report-fullscreen" id="reportFullscreen" hidden>
-    <div class="report-fullscreen__bar">
-      <div class="report-fullscreen__meta">
-        <span class="report-fullscreen__title">Relatório</span>
-        <span class="report-fullscreen__hint" id="reportMeta"></span>
+    <header class="report-fullscreen__bar">
+      <div class="report-fullscreen__brand">
+        <div class="report-fullscreen__accent" aria-hidden="true"></div>
+        <div class="report-fullscreen__meta">
+          <p class="report-fullscreen__eyebrow">Visualização em tela cheia</p>
+          <h2 class="report-fullscreen__title">Relatório</h2>
+          <p class="report-fullscreen__hint" id="reportMeta"></p>
+        </div>
       </div>
       <div class="report-fullscreen__bar-actions">
         <span class="report-bar__busy" id="reportBarBusy" hidden>
           <span class="spinner spinner--sm" aria-hidden="true"></span>
           <span class="report-bar__busy-text">Montando tabela…</span>
         </span>
-        <button type="button" class="btn btn--ghost" id="btnCloseReport">Fechar</button>
+        <button type="button" class="report-close" id="btnCloseReport" aria-label="Fechar relatório">
+          <span class="report-close__icon" aria-hidden="true"></span>
+          <span class="report-close__label">Fechar</span>
+        </button>
       </div>
-    </div>
+    </header>
     <div class="report-fullscreen__scroll" id="reportScroll" role="region" aria-label="Dados do relatório">
       <p class="report-loading" id="reportLoading" hidden>Carregando tabela…</p>
       <table class="data-table data-table--report" id="reportTable"></table>
